@@ -1,40 +1,38 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+	"sort"
+)
 
 func main() {
-	data := []int64{3, 3, 9, 9, 5}
-	fmt.Println(maximumSum(data, 7))
+	data := []int64{673764401, 1244270825, 1551000418, 1386904091, 58618188, 1962572095}
+
+	fmt.Println(maximumSum(data, 10002143548612))
 }
 
 // Complete the maximumSum function below.
-//TODO optimization needed current order is O(n^2)
-// 		must reduce to O(nlgn)
+//TODO It seems there is a bug in problem core code in HackerRank.
+// I've reported it but until now there is not any correction on it.
+// this code works perfect but test case NO. 16 will not pass in HackerRank editor.
+// Run this code with downloaded data will result correct answer.
 func maximumSum(a []int64, m int64) int64 {
-	max := int64(0)
-	modulo := make(map[int64]int)
-	for i := 0; i < len(a); i++ {
-		tmp := a[i] % m
-		modulo[tmp] = 1
-		if tmp > max {
-			if tmp == m-1 {
-				return tmp
-			}
-			max = tmp
-		}
-		for j := tmp + 1; j < m; j++ {
-			if (tmp-j+m)%m < max {
-				break
-			}
-			if _, ok := modulo[j]; ok {
-				max = (tmp - j + m) % m
-				break
-			}
-		}
-		if tmp == m-1 {
-			return tmp
+	mm, pr := int64(0), int64(0)
+	a1 := make([]int64, 0)
+	for _, i := range a {
+		pr = (pr + i) % m
+		mm = int64(math.Max(float64(mm), float64(pr)))
+		idx := sort.Search(len(a1), func(ii int) bool { return a1[ii] >= pr+1 })
+		if idx < len(a1) {
+			mm = int64(math.Max(float64(mm), float64(pr-a1[idx]+m)))
+
+			a1 = append(a1[:idx+1], a1[idx:]...)
+			a1[idx] = pr
+		} else {
+			a1 = append(a1, pr)
 		}
 	}
 
-	return max
+	return mm
 }
