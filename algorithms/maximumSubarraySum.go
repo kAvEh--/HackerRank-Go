@@ -18,21 +18,21 @@ func main() {
 // this code works perfect but test case NO. 16 will not pass in HackerRank editor.
 // Run this code with downloaded data will result correct answer.
 func maximumSum(a []int64, m int64) int64 {
-	mm, pr := int64(0), int64(0)
-	a1 := make([]int64, 0)
+	max, n := int64(0), int64(0)
+	tmp := make([]int64, 0)
 	for _, i := range a {
-		pr = (pr + i) % m
-		mm = int64(math.Max(float64(mm), float64(pr)))
-		idx := sort.Search(len(a1), func(ii int) bool { return a1[ii] >= pr+1 })
-		if idx < len(a1) {
-			mm = int64(math.Max(float64(mm), float64(pr-a1[idx]+m)))
+		n = (n + i) % m
+		max = int64(math.Max(float64(max), float64(n)))
+		idx := sort.Search(len(tmp), func(ii int) bool { return tmp[ii] >= n+1 })
+		if idx < len(tmp) {
+			max = int64(math.Max(float64(max), float64(n-tmp[idx]+m)))
 
-			a1 = append(a1[:idx+1], a1[idx:]...)
-			a1[idx] = pr
+			tmp = append(tmp[:idx+1], tmp[idx:]...)
+			tmp[idx] = n
 		} else {
-			a1 = append(a1, pr)
+			tmp = append(tmp, n)
 		}
 	}
 
-	return mm
+	return max
 }
