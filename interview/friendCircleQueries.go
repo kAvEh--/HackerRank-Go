@@ -3,7 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	data := [][]int32{{6, 4}, {5, 9}, {8, 5}, {4, 1}, {1, 5}, {7, 2}, {4, 2}, {7, 6}}
+	//data := [][]int32{{6, 4}, {5, 9}, {8, 5}, {4, 1}, {1, 5}, {7, 2}, {4, 2}, {7, 6}}
+	data := [][]int32{{1, 2}, {3, 4}, {1, 3}, {5, 7}, {5, 6}, {7, 4}}
 	ret := maxCircle(data)
 	for i := 0; i < len(ret); i++ {
 		fmt.Println(ret[i])
@@ -23,25 +24,29 @@ func maxCircle(queries [][]int32) []int32 {
 			if m1[queries[i][1]] > 0 {
 				if m1[queries[i][0]] != m1[queries[i][1]] {
 					t1, t2 := m1[queries[i][0]], m1[queries[i][1]]
-					m3[idx] = make([]int32, 0)
-					for j := range m3[t1] {
-						m2[t1]--
-						m1[m3[t1][j]] = idx
-						m2[idx]++
-						m3[idx] = append(m3[idx], m3[t1][j])
+					if len(m3[t1]) > len(m3[t2]) {
+						for j := range m3[t2] {
+							m2[t2]--
+							m1[m3[t2][j]] = t1
+							m2[t1]++
+							m3[t1] = append(m3[t1], m3[t2][j])
+						}
+						m3[t2] = make([]int32, 0)
+						if m2[t1] > m2[max] {
+							max = t1
+						}
+					} else {
+						for j := range m3[t1] {
+							m2[t1]--
+							m1[m3[t1][j]] = t2
+							m2[t2]++
+							m3[t2] = append(m3[t2], m3[t1][j])
+						}
+						m3[t1] = make([]int32, 0)
+						if m2[t2] > m2[max] {
+							max = t2
+						}
 					}
-					for j := range m3[t2] {
-						m2[t2]--
-						m1[m3[t2][j]] = idx
-						m2[idx]++
-						m3[idx] = append(m3[idx], m3[t2][j])
-					}
-					m3[t1] = make([]int32, 0)
-					m3[t2] = make([]int32, 0)
-					if m2[idx] > m2[max] {
-						max = idx
-					}
-					idx++
 				}
 			} else {
 				m1[queries[i][1]] = m1[queries[i][0]]
