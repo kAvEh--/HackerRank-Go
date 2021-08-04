@@ -65,7 +65,7 @@ func main() {
 	}
 }
 
-func readLine(reader *bufio.Reader) string {
+func readLine3(reader *bufio.Reader) string {
 	str, _, err := reader.ReadLine()
 	if err == io.EOF {
 		return ""
@@ -74,7 +74,7 @@ func readLine(reader *bufio.Reader) string {
 	return strings.TrimRight(string(str), "\r\n")
 }
 
-func checkError(err error) {
+func checkError3(err error) {
 	if err != nil {
 		panic(err)
 	}

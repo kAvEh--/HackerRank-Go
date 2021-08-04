@@ -43,7 +43,7 @@ func main() {
 	writer.Flush()
 }
 
-func readLine(reader *bufio.Reader) string {
+func readLine2(reader *bufio.Reader) string {
 	str, _, err := reader.ReadLine()
 	if err == io.EOF {
 		return ""
@@ -52,7 +52,7 @@ func readLine(reader *bufio.Reader) string {
 	return strings.TrimRight(string(str), "\r\n")
 }
 
-func checkError(err error) {
+func checkError2(err error) {
 	if err != nil {
 		panic(err)
 	}
